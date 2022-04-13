@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <title>切片</title>
+    <g id="UI-Layouts" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1-8-2.-反饋組件Toast---黑色" transform="translate(-132.000000, -257.000000)">
+            <g id="Toast/White/Info" transform="translate(120.000000, 245.000000)">
+                <g id="Icon/Verified" transform="translate(12.000000, 12.000000)">
+                    <path d="M12,0 C5.35384616,0 0,5.35384616 0,12 C0,18.6461538 5.35384616,24 12,24 C18.6461538,24 24,18.6461538 24,12 C24,5.35384614 18.6461538,0 12,0" id="路径" fill="#FFBB37" fill-rule="nonzero"></path>
+                    <line x1="12" y1="6.85714286" x2="12" y2="12" id="直线-4" stroke="#FFFFFF" stroke-width="1.71428571" stroke-linecap="round"></line>
+                    <circle id="椭圆形" stroke="#FFFFFF" stroke-width="0.857142857" fill="#FFFFFF" cx="12" cy="15.4285714" r="1"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
