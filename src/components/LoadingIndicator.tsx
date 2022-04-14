@@ -1,7 +1,7 @@
-import React, { forwardRef, useImperativeHandle, useState } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import { connect } from "react-redux";
-import { apx } from "../utils/device";
+import React, {forwardRef, useImperativeHandle, useState} from 'react';
+import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {connect} from 'react-redux';
+import {apx} from '../utils/device';
 
 const LoadingIndicator = forwardRef((props, ref) => {
   const [visible, setVisible] = useState<boolean>(false);

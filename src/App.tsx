@@ -1,11 +1,12 @@
-import "react-native-gesture-handler";
-import React, { useEffect } from "react";
-import { Provider } from "react-redux";
-import { lockToPortrait } from "react-native-orientation";
-import { create } from "dva-core";
-import { Dimensions, LogBox, Platform, UIManager, View } from "react-native";
-import Entry from "./entry";
-import models from "./models/index";
+import 'react-native-gesture-handler';
+import React, {useEffect} from 'react';
+import {Provider} from 'react-redux';
+import {lockToPortrait} from 'react-native-orientation';
+// @ts-ignore
+import {create} from 'dva-core';
+import {Dimensions, LogBox, Platform, UIManager, View} from 'react-native';
+import Entry from './entry';
+import models from './models/index';
 
 LogBox.ignoreAllLogs(true);
 
@@ -20,7 +21,7 @@ models.forEach((model: any) => app.model(model));
 app.start();
 
 const store = app._store;
-global.$store = app._store;
+$store = app._store;
 
 if (
   Platform.OS === 'android' &&

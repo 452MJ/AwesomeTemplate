@@ -41,7 +41,7 @@ const renderTabBar = ({
         }
       };
 
-      const tabLabels: {Welcome: string; Settings: string} = {
+      const tabLabels: {Welcome: string; Settings: string} | any = {
         Welcome: '欢迎',
         Settings: '设置',
       };
@@ -83,7 +83,6 @@ function TabScreen() {
   return (
     <Tab.Navigator
       // initialRouteName="Diamond"
-      headerMode="none"
       tabBarPosition="bottom"
       tabBar={renderTabBar}
       keyboardDismissMode="on-drag"
@@ -106,7 +105,7 @@ function StackScreen() {
   return (
     <Stack.Navigator
       // initialRouteName={__DEV__ ? 'Tab' : 'Welcome'}
-      screenOptions={({route, navigation}) => ({
+      screenOptions={({}) => ({
         headerShown: false,
         gestureEnabled: true,
         presentation: 'card',

@@ -10,9 +10,13 @@ import us from './i18n/en-US';
  {isRTL: false, languageTag: "zh-TW", countryCode: "TW", languageCode: "zh"}
  {isRTL: false, languageTag: "en-US", countryCode: "US", languageCode: "en"}
  */
-const setI18nConfig = locale => {
-  const {isRTL, languageTag} = locale;
-
+const setI18nConfig = ({
+  isRTL,
+  languageTag,
+}: {
+  isRTL: boolean;
+  languageTag: string;
+}) => {
   i18n.translations = {
     'zh-CN': cn,
     'zh-TW': tw,
@@ -27,12 +31,16 @@ const setI18nConfig = locale => {
   I18nManager.forceRTL(isRTL);
 };
 
-const translation = (zh_cn, zh_tw, en_us) =>
+const translation = (
+  zh_cn: string,
+  zh_tw: string,
+  en_us: string,
+): string | void =>
   ({
     'zh-CN': zh_cn,
     'zh-TW': zh_tw,
     'en-US': en_us,
-  }[i18n.locale]);
+  }[String(i18n.locale)]);
 
 const i18nUtil = {
   setI18nConfig,

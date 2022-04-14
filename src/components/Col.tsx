@@ -1,7 +1,7 @@
-import React, { memo } from "react";
-import Flex from "@ant-design/react-native/lib/flex";
-import { FlexPropsType } from "@ant-design/react-native/lib/flex/PropsType";
-import { ViewStyle } from "react-native";
+import React, {memo} from 'react';
+import Flex from '@ant-design/react-native/lib/flex';
+import {FlexPropsType} from '@ant-design/react-native/lib/flex/PropsType';
+import {ViewStyle} from 'react-native';
 
 interface IProps extends FlexPropsType {
   style?: ViewStyle;

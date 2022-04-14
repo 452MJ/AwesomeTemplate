@@ -1,8 +1,8 @@
-import React, { memo } from "react";
-import { ViewStyle } from "react-native";
-import { apx } from "../utils/device";
-import Col from "./Col";
-import Row from "./Row";
+import React, {memo} from 'react';
+import {ViewStyle} from 'react-native';
+import {apx} from '../utils/device';
+import Col from './Col';
+import Row from './Row';
 
 interface IProps {
   style?: ViewStyle;

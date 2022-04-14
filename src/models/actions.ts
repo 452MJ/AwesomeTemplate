@@ -3,4 +3,4 @@ export const Actions = {
     UPDATE_USER: 'user/updateUserInfo',
     SIGN_OUT: 'user/signOut',
   },
-}
+};

@@ -1,20 +1,27 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
+interface IKeys {
+  userInfo: string;
+  locale: string;
+}
+
+const KEYS: IKeys = {
+  userInfo: 'userInfo',
+  locale: 'locale',
+};
+
 const storage = {
-  KEYS: {
-    userInfo: 'userInfo',
-    locale: 'locale',
-  },
-  storeData: async (key, value) => {
+  KEYS,
+  storeData: async (key: keyof IKeys, value: any): Promise<void> => {
     try {
       await AsyncStorage.setItem(key, JSON.stringify(value));
     } catch (e) {
       // saving error
     }
   },
-  getData: async key => {
+  getData: async (key: keyof IKeys): Promise<any> => {
     try {
-      const value = await AsyncStorage.getItem(key);
+      const value: string | null = await AsyncStorage.getItem(key);
       if (value !== null) {
         // value previously stored
         return JSON.parse(value);

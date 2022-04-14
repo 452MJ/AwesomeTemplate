@@ -1,40 +1,40 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {View} from 'react-native';
-import PropTypes from 'prop-types';
 import {apx} from '../utils/device';
 
-export default class ProgressBar extends React.PureComponent {
-  static propTypes = {
-    inactiveColor: PropTypes.string,
-    activeColor: PropTypes.string,
-    width: PropTypes.number,
-    height: PropTypes.number,
-    progress: PropTypes.number.isRequired,
-  };
+interface IProps {
+  inactiveColor?: string;
+  activeColor?: string;
+  width?: number;
+  height?: number;
+  progress: number;
+}
 
-  static defaultProps = {
-    inactiveColor: '#1E1B1C',
-    activeColor: '#C51F1F',
-    width: apx(200),
-    height: apx(10),
-  };
-
-  render = () => (
+function ProgressBar({
+  inactiveColor = '#1E1B1C',
+  activeColor = '#C51F1F',
+  width = apx(200),
+  height = apx(10),
+  progress,
+}: IProps) {
+  return (
     <View
       style={{
-        height: this.props.height,
-        width: this.props.width,
-        backgroundColor: this.props.inactiveColor,
+        height: height,
+        width: width,
+        backgroundColor: inactiveColor,
       }}>
       <View
         style={{
-          height: this.props.height,
+          height: height,
           position: 'absolute',
-          backgroundColor: this.props.activeColor,
+          backgroundColor: activeColor,
           left: 0,
-          width: this.props.width * this.props.progress,
+          width: width * progress,
         }}
       />
     </View>
   );
 }
+
+export default memo(ProgressBar);

@@ -1,7 +1,7 @@
 import React from 'react';
 import {TouchableWithoutFeedback} from 'react-native';
 import Modal from 'react-native-modal';
-import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker, {Image} from 'react-native-image-crop-picker';
 import {apx, IPXBarHeight} from '../utils/device';
 import Col from './Col';
 import Button from './Button';
@@ -53,25 +53,15 @@ function ModalImagePicker({isVisible, onClose, onImageSelected}: IProps) {
                 borderRadius: 0,
               }}
               textStyle={{fontSize: apx(36), color: 'rgba(255,255,255,0.85)'}}
-              onPress={() => {
-                ImagePicker.launchCamera(
-                  {
-                    mediaType: 'photo',
-                    includeBase64: false,
-                    maxHeight: 230,
-                    maxWidth: 200,
-                  },
-                  (res: ImagePickerResponse): void => {
-                    if (res.didCancel) {
-                      $toast.show('User cancelled image picker');
-                    } else if (res.errorCode) {
-                      $toast.show('ImagePicker Error: ', res.errorCode);
-                    } else {
-                      onClose();
-                      onImageSelected(res);
-                    }
-                  },
-                );
+              onPress={async (): Promise<void> => {
+                const res: Image = await ImagePicker.openPicker({
+                  mediaType: 'photo',
+                  includeBase64: false,
+                });
+                if (res.data) {
+                  onClose();
+                  onImageSelected(res.data);
+                }
               }}
             />
             <Dash
@@ -90,25 +80,15 @@ function ModalImagePicker({isVisible, onClose, onImageSelected}: IProps) {
                 borderRadius: 0,
               }}
               textStyle={{fontSize: apx(36), color: 'rgba(255,255,255,0.85)'}}
-              onPress={() => {
-                ImagePicker.launchImageLibrary(
-                  {
-                    mediaType: 'photo',
-                    includeBase64: false,
-                    maxHeight: 200,
-                    maxWidth: 200,
-                  },
-                  (res: ImagePickerResponse): void => {
-                    if (res.didCancel) {
-                      $toast.show('User cancelled image picker');
-                    } else if (res.errorCode) {
-                      $toast.show('ImagePicker Error: ', res.errorCode);
-                    } else {
-                      onClose();
-                      onImageSelected(res);
-                    }
-                  },
-                );
+              onPress={async (): Promise<void> => {
+                const res: Image = await ImagePicker.openCamera({
+                  mediaType: 'photo',
+                  includeBase64: false,
+                });
+                if (res.data) {
+                  onClose();
+                  onImageSelected(res.data);
+                }
               }}
             />
           </Col>

@@ -1,13 +1,22 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react";
-import { Text, View } from "react-native";
-import { connect } from "react-redux";
-import { apx } from "../utils/device";
-import codePush, { DownloadProgress, LocalPackage, RemotePackage } from "react-native-code-push";
-import Modal from "react-native-modal";
-import DeviceInfo from "react-native-device-info";
-import ProgressBar from "./ProgressBar";
-import Button from "./Button";
-import Touchable from "./Touchable";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
+import {Text, View} from 'react-native';
+import {connect} from 'react-redux';
+import {apx} from '../utils/device';
+import codePush, {
+  DownloadProgress,
+  LocalPackage,
+  RemotePackage,
+} from 'react-native-code-push';
+import Modal from 'react-native-modal';
+import DeviceInfo from 'react-native-device-info';
+import ProgressBar from './ProgressBar';
+import Button from './Button';
+import Touchable from './Touchable';
 
 const ModalCodePush = forwardRef((props, ref) => {
   const [visible, setVisible] = useState<boolean>(false);

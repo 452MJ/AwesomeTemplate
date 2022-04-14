@@ -1,13 +1,15 @@
 import React, {memo, useState} from 'react';
 import {connect} from 'react-redux';
-import {Text, TouchableOpacity} from 'react-native';
-import FastImage, {FastImageProps} from 'react-native-fast-image';
+import {Text, TouchableOpacity, ViewStyle} from 'react-native';
+import FastImage, {FastImageProps, Source} from 'react-native-fast-image';
 import Modal from 'react-native-modal';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {apx} from '../utils/device';
 import Col from './Col';
 
-const ZoomImage = (props: FastImageProps) => {
+const ZoomImage = (
+  props: FastImageProps & {style: ViewStyle; source: Source & {uri: string}},
+) => {
   const [modalZoom, setModalZoom] = useState(false);
 
   return (
@@ -51,7 +53,6 @@ const ZoomImage = (props: FastImageProps) => {
         onBackButtonPress={() => setModalZoom(false)}
         onBackdropPress={() => setModalZoom(false)}>
         <ImageViewer
-          renderIndicator={() => null}
           style={{
             backgroundColor: 'black',
           }}
@@ -63,10 +64,6 @@ const ZoomImage = (props: FastImageProps) => {
           }}
           enableSwipeDown
           renderImage={imageProps => <FastImage {...imageProps} />}
-          menuContext={{
-            saveToLocal: $i18n.t('Save to local'),
-            cancel: $i18n.t('Cancel'),
-          }}
           imageUrls={[{url: props.source.uri}]}
         />
       </Modal>

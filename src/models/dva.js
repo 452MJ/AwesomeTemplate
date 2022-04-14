@@ -1,25 +1,25 @@
 import {createLogger} from 'redux-logger';
 import {create} from 'dva-core';
-// @ts-ignore
+
 let app;
 
 let store;
 
 let dispatch;
 
-let registered: boolean;
+let registered;
 
-function createApp(opt: any) {
+function createApp(opt) {
   // redux 的日志
   opt.onAction = [createLogger()];
   app = create(opt);
   app.use({
-    onError(err: any) {
+    onError(err) {
       console.log('dvaError', err);
     },
   });
   if (!registered) {
-    opt.models.forEach((model: any) => app.model(model));
+    opt.models.forEach(model => app.model(model));
   }
   registered = true;
   app.start();

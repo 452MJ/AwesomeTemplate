@@ -10,48 +10,49 @@ import ModalImagePicker from './ModalImagePicker';
 import SvgIcon from './SvgIcon';
 
 interface IProps {
-  initImage?: string;
+  initImageUrl?: string;
   width?: number;
   height?: number;
   onSelected: (response: string) => any;
+  onDelete: () => any;
+  onlyUpload?: boolean;
 }
 
 const UploadImage = ({
-  initImage,
+  initImageUrl = '',
   width = apx(230),
   height = apx(230),
   onSelected,
+  onlyUpload,
 }: IProps) => {
-  const [image, setImage] = useState(initImage);
-  const [modalZoom, setModalZoom] = useState(false);
+  const [modalZoom, setModalZoom] = useState<boolean>(false);
 
-  const [modalImagePicker, setModalImagePicker] = useState(false);
+  const [modalImagePicker, setModalImagePicker] = useState<boolean>(false);
 
-  const [uploadUrl, setUploadUrl] = useState('');
-  const [response, setResponse] = useState('');
+  const [imageUrl, setImageUrl] = useState<string>(initImageUrl);
 
   return (
     <Col>
-      {!response ? (
+      {!imageUrl || onlyUpload ? (
         <Touchable onPress={() => setModalImagePicker(true)}>
-          <FastImage
-            source={require('../assets/images/icon_createPost_add.png')}
-            style={{
-              width,
-              height,
-              borderRadius: apx(4),
-            }}
-          />
+          {/*<FastImage*/}
+          {/*  source={require('../assets/images/icon_createPost_add.png')}*/}
+          {/*  style={{*/}
+          {/*    width,*/}
+          {/*    height,*/}
+          {/*    borderRadius: apx(8),*/}
+          {/*  }}*/}
+          {/*/>*/}
         </Touchable>
       ) : (
         <Col>
           <Touchable onPress={() => setModalZoom(true)}>
             <FastImage
-              source={response}
+              source={{uri: imageUrl}}
               style={{
                 width,
                 height,
-                borderRadius: apx(4),
+                borderRadius: apx(8),
               }}
             />
           </Touchable>
@@ -62,21 +63,17 @@ const UploadImage = ({
               top: apx(10),
               right: apx(10),
             }}
-            onPress={() => setResponse('')}>
-            <Col
-              style={{
-                width: apx(32),
-                height: apx(32),
-                borderRadius: apx(32),
-                backgroundColor: '#333',
-                borderWidth: apx(2),
-                borderColor: '#fff',
-                opacity: 0.65,
-              }}
-              justify="center"
-              align="center">
-              <SvgIcon icon="icon_close" size={apx(20)} />
-            </Col>
+            contentContainerStyle={{
+              width: apx(32),
+              height: apx(32),
+              borderRadius: apx(32),
+              backgroundColor: '#333',
+              borderWidth: apx(2),
+              borderColor: '#fff',
+              opacity: 0.65,
+            }}
+            onPress={() => setImageUrl('')}>
+            <SvgIcon icon="icon_close" size={apx(20)} />
           </Touchable>
         </Col>
       )}
@@ -84,9 +81,14 @@ const UploadImage = ({
       <ModalImagePicker
         isVisible={modalImagePicker}
         onClose={() => setModalImagePicker(false)}
-        onImageSelected={res => {
-          setResponse(res);
+        onImageSelected={async res => {
           //  TODO: Upload image api
+          $loading.show();
+          const {data} = await $services.settings.uploadImage(res);
+          $loading.hide();
+
+          setImageUrl(data);
+          onSelected(data);
         }}
       />
 
@@ -100,7 +102,6 @@ const UploadImage = ({
         onBackButtonPress={() => setModalZoom(false)}
         onBackdropPress={() => setModalZoom(false)}>
         <ImageViewer
-          renderIndicator={() => null}
           style={{
             backgroundColor: 'black',
           }}
@@ -112,13 +113,9 @@ const UploadImage = ({
           }}
           enableSwipeDown
           renderImage={imageProps => <FastImage {...imageProps} />}
-          menuContext={{
-            saveToLocal: $i18n.t('Save to local'),
-            cancel: $i18n.t('Cancel'),
-          }}
           imageUrls={[
             {
-              url: response.uri,
+              url: imageUrl,
             },
           ]}
         />

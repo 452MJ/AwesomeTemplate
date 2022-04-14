@@ -1,7 +1,7 @@
-import React, { memo } from "react";
-import { SvgCss } from "react-native-svg";
-import { ViewStyle } from "react-native";
-import svgs from "../assets/svgs/svgs";
+import React, {memo} from 'react';
+import {SvgCss} from 'react-native-svg';
+import {ViewStyle} from 'react-native';
+import svgs from '../assets/svgs/svgs';
 
 interface IProps {
   icon: string;

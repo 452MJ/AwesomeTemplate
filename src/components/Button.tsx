@@ -1,9 +1,9 @@
-import React, { memo } from "react";
-import { Text, TextStyle, ViewStyle } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
-import { apx } from "../utils/device";
-import Col from "./Col";
-import Touchable from "./Touchable";
+import React, {memo} from 'react';
+import {Text, TextStyle, ViewStyle} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import {apx} from '../utils/device';
+import Col from './Col';
+import Touchable from './Touchable';
 
 interface IProps {
   theme?: 'gold' | 'white' | 'grey' | 'green' | 'red';

@@ -19,5 +19,5 @@ declare global {
 }
 
 declare module 'dva-core' {
-  export function create();
+  export function create(hooksAndOpts = {}, createOpts = {});
 }

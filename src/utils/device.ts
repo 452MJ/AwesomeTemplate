@@ -13,14 +13,14 @@ export function isIPhoneX() {
   );
 }
 
-const getStatusBarHeight = () => {
+const getStatusBarHeight = (): number | undefined => {
   if (Platform.OS === 'ios') {
     return isIPhoneX() ? 40 : 20;
   }
   return Platform.Version >= 21 ? StatusBar.currentHeight : 0;
 };
 
-const statusBarHeight = getStatusBarHeight();
+const statusBarHeight: number = getStatusBarHeight() || 0;
 
 export const apx = (size = 0) => {
   let width = Dimensions.get('window').width;
@@ -34,7 +34,7 @@ export const apxInt = (size = 0) => {
   if (width > 600) {
     width = 600;
   }
-  return parseInt((width / 750) * size);
+  return parseInt(String((width / 750) * size), 10);
 };
 
 export const dismissKeyboard = Keyboard.dismiss;

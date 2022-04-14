@@ -1,7 +1,7 @@
 import RNFetchBlob from 'rn-fetch-blob';
 import {ENV, timeoutPromise} from './common';
 
-let host;
+let host: string;
 // export const defaultUrl = 'ws://192.168.12.135:9944'
 
 if (ENV === 'production') {
@@ -19,7 +19,16 @@ const api = {
   },
 };
 
-async function getHttpHeaders() {
+type ExtrasHeader = Partial<{
+  Authorization: string;
+  ['accept-language']: string;
+}> &
+  HeadersInit_;
+
+interface FetchOption extends RequestInit {
+  headers: ExtrasHeader;
+}
+async function getHttpHeaders(): Promise<ExtrasHeader> {
   let token = $store.getState().user.token;
   if (!token) {
     const user = await $storage.getData($storage.KEYS.userInfo);
@@ -32,22 +41,27 @@ async function getHttpHeaders() {
           Authorization: `Bearer ${token}`,
         }
       : {}),
-    'accept-language': {
-      'en-US': 'en-US',
-      'zh-TW': 'zh-HK',
-    }[$store.getState().settings.language],
+    'accept-language':
+      {
+        'en-US': 'en-US',
+        'zh-TW': 'zh-HK',
+      }[String($store.getState().settings.language)] || 'en-US',
   };
 }
 
-async function customFetch(url, opt, needUpload) {
-  const customHeader = await getHttpHeaders();
+async function customFetch(
+  url: RequestInfo,
+  opt: FetchOption,
+  needUpload: boolean = false,
+): Promise<Awaited<any> | void> {
+  const customHeader: ExtrasHeader = await getHttpHeaders();
   opt.headers = {
     ...opt.headers,
     ...customHeader,
   };
 
   return timeoutPromise(
-    fetch(url, opt).then(res => res.json()),
+    fetch(url, opt).then((res: Response) => res.json()),
     needUpload ? 60 * 1000 : 30 * 1000,
   ).catch(err => {
     console.log(err);
@@ -58,12 +72,11 @@ async function customFetch(url, opt, needUpload) {
 }
 
 const http = {
-  host,
   api,
-  get: async (url, params = {}) => {
-    let finalUrl = host + url;
+  get: async (url: string, params: {[key: string]: any} = {}) => {
+    let finalUrl: string = host + url;
 
-    Object.keys(params).forEach((key, index) => {
+    Object.keys(params).forEach((key: string, index: number) => {
       finalUrl += `${index === 0 ? '?' : '&'}${key}=${encodeURIComponent(
         params[key],
       )}`;
@@ -83,7 +96,7 @@ const http = {
     });
   },
 
-  post: (url, params = {}) =>
+  post: (url: string, params: {[key: string]: any} = {}) =>
     customFetch(host + url, {
       method: 'POST',
       headers: {
@@ -98,7 +111,7 @@ const http = {
       return result;
     }),
 
-  put: (url, params = {}) =>
+  put: (url: string, params: {[key: string]: any} = {}) =>
     customFetch(host + url, {
       method: 'PUT',
       headers: {
@@ -113,7 +126,7 @@ const http = {
       return result;
     }),
 
-  delete: (url, params = {}) =>
+  delete: (url: string, params: {[key: string]: any} = {}) =>
     customFetch(host + url, {
       method: 'DELETE',
       headers: {
@@ -128,7 +141,7 @@ const http = {
       return result;
     }),
 
-  patch: async (url, params = {}) =>
+  patch: async (url: string, params: {[key: string]: any} = {}) =>
     customFetch(host + url, {
       method: 'PATCH',
       headers: {
@@ -142,14 +155,29 @@ const http = {
       }
       return result;
     }),
-  uploadMedia: async ({type, uri}, ossInfo) => {
+  uploadMedia: async (
+    {
+      type,
+      uri,
+    }: {
+      type: 'image' | 'video' | 'audio';
+      uri: string;
+    },
+    ossInfo: {
+      url: string;
+      key: string;
+      OSSAccessKeyId: string;
+      policy: string;
+      Signature: string;
+    },
+  ) => {
     const fileName = uri.substring(uri.lastIndexOf('/') + 1, uri.length);
-    const key = `${ossInfo.formData.key}/${fileName}`;
+    const key = `${ossInfo.key}/${fileName}`;
 
     const body = [
-      {name: 'OSSAccessKeyId', data: ossInfo.formData.OSSAccessKeyId},
-      {name: 'policy', data: ossInfo.formData.policy},
-      {name: 'Signature', data: ossInfo.formData.Signature},
+      {name: 'OSSAccessKeyId', data: ossInfo.OSSAccessKeyId},
+      {name: 'policy', data: ossInfo.policy},
+      {name: 'Signature', data: ossInfo.Signature},
       {name: 'key', data: key},
       {
         name: 'file',
@@ -165,14 +193,14 @@ const http = {
 
     await RNFetchBlob.fetch(
       'POST',
-      ossInfo.url.bucket,
+      ossInfo.url,
       {
         'Content-Type': 'multipart/form-data',
       },
       body,
     );
 
-    return `${ossInfo.url.cdn}/${key}`;
+    return `${ossInfo.url}/${key}`;
   },
 };
 
