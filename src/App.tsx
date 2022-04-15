@@ -30,15 +30,15 @@ if (
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-function App(): JSX.Element {
+function App() {
   const onChange = (): void => {};
 
   useEffect(() => {
-    Dimensions.addEventListener('change', onChange);
+    const listener = Dimensions.addEventListener('change', onChange);
     return (): void => {
-      Dimensions.removeEventListener('change', onChange);
+      listener.remove();
     };
-  });
+  }, []);
 
   let width: number = Dimensions.get('window').width;
   if (width > 600) {

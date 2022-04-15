@@ -104,7 +104,7 @@ const Root = createStackNavigator();
 function StackScreen() {
   return (
     <Stack.Navigator
-      // initialRouteName={__DEV__ ? 'Tab' : 'Welcome'}
+      initialRouteName={__DEV__ ? 'Tab' : 'Welcome'}
       screenOptions={({}) => ({
         headerShown: false,
         gestureEnabled: true,
